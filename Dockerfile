@@ -4,11 +4,10 @@ ENV PYTHON_VERSION "3.6.0"
 ENV POSTGRES_REPO "https://download.postgresql.org/pub/repos/yum/9.6/redhat/rhel-7-x86_64/pgdg-centos96-9.6-3.noarch.rpm"
 
 RUN yum install -y \
-    wget \
-    gcc make \
-    zlib-dev openssl-devel sqlite-devel bzip2-devel
+    gcc make zlib-dev openssl-devel sqlite-devel bzip2-devel
 
-RUN wget https://www.python.org/ftp/python/${PYTHON_VERSION}/Python-${PYTHON_VERSION}.tgz \
+
+RUN curl -SLO https://www.python.org/ftp/python/${PYTHON_VERSION}/Python-${PYTHON_VERSION}.tgz \
     && tar xvf Python-${PYTHON_VERSION}.tgz \
     && cd Python-${PYTHON_VERSION} \
     && ./configure --prefix=/usr/local \
@@ -20,6 +19,7 @@ RUN wget https://www.python.org/ftp/python/${PYTHON_VERSION}/Python-${PYTHON_VER
 ENV PATH "/usr/local/bin:${PATH}"
 
 RUN yum install -y ${POSTGRES_REPO} \
-    && yum install -y postgresql96-devel
+    && yum install -y postgresql96-devel \
+    && yum cleab all
 
 ENV PATH "/usr/pgsql-9.6/bin:${PATH}"
